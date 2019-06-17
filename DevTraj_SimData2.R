@@ -4,6 +4,22 @@
 # Submitted to Developmental Science
 
 setwd("~/trajectories-perceptual-narrowing")
+
+# Import eye-tracking ANALYSIS data, cleaned by codeDataClean.py
+# file from a raw file containing all participants.
+# NOTE: exclusion occurs in codeDataClean.py
+cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata)
+
+# then import behavioural data frames, which include all hand-scored 
+# data required for analyses (e.g., questionnaires, Mullens, etc)
+manualdata <- data.frame(read.csv("test.csv")); View(manualdata)
+
+# merge them to create a clean & complete analysis data set
+mydata <- merge(cleandata, manualdata, by.x = 1, by.y = 0, all.x = TRUE); View(mydata)
+
+require("praise")
+
+
 mydata <- data.frame(read.csv("SimulationData25Feb.csv"))
 require("plyr")
 require("dplyr")

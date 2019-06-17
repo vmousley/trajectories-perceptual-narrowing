@@ -3,45 +3,27 @@
 # XXXXXXXXXXXXXXXXXXXXX
 # Submitted to Developmental Science
 
+# Dependencies ------------------------------------------------------------
 setwd("~/trajectories-perceptual-narrowing")
+require("praise")
+require("plyr")
+require("dplyr")
 
-# Import eye-tracking ANALYSIS data, cleaned by codeDataClean.py
-# file from a raw file containing all participants.
-# NOTE: exclusion occurs in codeDataClean.py
-cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata)
+# Importing Data ----------------------------------------------------------
+# Eeye-tracking ANALYSIS data, cleaned by codeDataClean.py file (from a raw file containing all participants).
+    # NOTE: exclusion occurs in codeDataClean.py
+cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata); praise()
 
-# then import behavioural data frames, which include all hand-scored 
+# Then import behavioural data frames, which include all hand-scored 
 # data required for analyses (e.g., questionnaires, Mullens, etc)
-manualdata <- data.frame(read.csv("test.csv")); View(manualdata)
+manualdata <- data.frame(read.csv("test.csv")); View(manualdata); praise ()
 
 # merge them to create a clean & complete analysis data set
 mydata <- merge(cleandata, manualdata, by.x = 1, by.y = 0, all.x = TRUE); View(mydata)
 
-require("praise")
+mydata <- data.frame(read.csv("XXXXX.csv"))
 
-
-mydata <- data.frame(read.csv("SimulationData25Feb.csv"))
-require("plyr")
-require("dplyr")
-
-#### Data Cleaning ####
-
-# Rename columns
-mydata <- plyr::rename(mydata, c("Participant.ID" = "ID",
-                                 "Language..0...mono..1...biling." = "Group",
-                                 "Age..days." = "Age",
-                                 "X..habit.trials" = "NoHabitTrials",
-                                 "Mean.habit.LT..sec." = "MeanHabit", 
-                                 "Pre.test.LT..sec." = "PreTest",
-                                 "Same.cond.LT..sec." = "Same",
-                                 "Switch.cond.LT..sec." = "Switch",
-                                 "Post.test.LT..sec." = "PostTest",
-                                 "Total.sequence.LT..sec." = "TotalLt",
-                                 "Diff.score.LT..sec." = "DiffScore")) 
-
-# Erase extra rows (added by R)
-mydata <- distinct(mydata, .keep_all = FALSE); mydata
-mydata <- mydata[-c(73), ]; mydata
+# Pre-Processing ----------------------------------------------------------
 
 # Numeric to Categorical (Group)
 mydata$Group <- as.factor(mydata$Group)

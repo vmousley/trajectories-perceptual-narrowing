@@ -10,7 +10,7 @@ require("plyr")
 require("dplyr")
 
 # Importing Data ----------------------------------------------------------
-# Eeye-tracking ANALYSIS data, cleaned by codeDataClean.py file (from a raw file containing all participants).
+# Eye-tracking ANALYSIS data, cleaned by codeDataClean.py file (from a raw file containing all participants).
     # NOTE: exclusion occurs in codeDataClean.py
 cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata); praise()
 

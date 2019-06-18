@@ -11,7 +11,7 @@ require("dplyr")
 
 # Importing Data ----------------------------------------------------------
 # Eye-tracking ANALYSIS data, cleaned by codeDataClean.py file (from a raw file containing all participants).
-    # NOTE: exclusion occurs in codeDataClean.py
+# NOTE: exclusion occurs in codeDataClean.py
 cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata); praise()
 
 # Then import behavioural data frames, which include all hand-scored 

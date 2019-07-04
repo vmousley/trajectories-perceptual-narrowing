@@ -1,0 +1,47 @@
+allophones,confidence,description,domainelement_pk,frequency,id,jsondata,marginal,markup_description,name,pk,valueset_pk
+ʐ ɖʐ,,,,,243,{},,,ɖʐ Burushaski (SPA 6),243,243
+,,,,,9581,{},False,,ɖʐ BURUSHASKI (UPSID 264),9581,9581
+,,,,,11068,{},True,,ɖʐ DAGUR (UPSID 312),11068,11068
+,,,,,14234,{},False,,ɖʐ ACOMA (UPSID 413),14234,14234
+,,,,,16600,{},False,,ɖʐ NAXI (UPSID 485),16600,16600
+ɖʐ,,,,,41701,{},False,,ɖʐ Jiarong (PH 1208),41701,41701
+ɖʐ,,,,,42071,{},False,,ɖʐ Torwali (PH 1219),42071,42071
+ɖʐ,,,,,56129,{},False,,ɖʐ Ronga (GM 1546),56129,56129
+,,,,,71908,{},,,ɖʐ Shipibo (SAPHON 2015),71908,71908
+ɖʐ,,,,,78709,{},True,,ɖʐ Xumi (UZ 2230),78709,78709
+ɖʐ ʐ,,,,,78772,{},False,,ɖʐ Xumi (UZ 2231),78772,78772
+,,,,,79228,{},False,,ɖʐ Udmurt (Standard) (EA 2240),79228,79228
+,,,,,79916,{},False,,ɖʐ Caodeng rGyalrong (EA 2257),79916,79916
+,,,,,80406,{},False,,ɖʐ Yongning Na (Mosuo) (EA 2267),80406,80406
+,,,,,81286,{},False,,ɖʐ Munji (EA 2289),81286,81286
+,,,,,81586,{},False,,ɖʐ Puxi (EA 2298),81586,81586
+,,,,,81948,{},False,,ɖʐ Balti (Kharkoo) (EA 2306),81948,81948
+,,,,,82856,{},False,,ɖʐ Rgyalthang Tibetan (EA 2327),82856,82856
+,,,,,83555,{},False,,ɖʐ Rusyn (Lemko) (EA 2343),83555,83555
+,,,,,83909,{},False,,ɖʐ Northern Cuona (EA 2350),83909,83909
+,,,,,84993,{},False,,ɖʐ Southern Cuona (EA 2379),84993,84993
+,,,,,85211,{},False,,ɖʐ Yodzyak Komi (EA 2384),85211,85211
+,,,,,86203,{},False,,ɖʐ Japhug (EA 2407),86203,86203
+,,,,,86722,{},False,,ɖʐ Zhongu Tibetan (EA 2420),86722,86722
+,,,,,87074,{},False,,ɖʐ Northern Qiang (Yadu) (EA 2429),87074,87074
+,,,,,88294,{},False,,ɖʐ Komi-Zyrian (Syktyvkar) (EA 2460),88294,88294
+,,,,,88689,{},False,,ɖʐ Abkhaz (Abzhywa) (EA 2468),88689,88689
+,,,,,88995,{},False,,ɖʐ Nyinpa Cone (EA 2474),88995,88995
+,,,,,89381,{},False,,ɖʐ Nuosu (Black Yi) (EA 2483),89380,89380
+,,,,,89539,{},False,,ɖʐ Northern Qiang (Hongyan) (EA 2486),89538,89538
+,,,,,90313,{},False,,ɖʐ Labrang Tibetan (EA 2502),90312,90312
+,,,,,90830,{},False,,ɖʐ Wakhi (EA 2514),90829,90829
+,,,,,91409,{},False,,ɖʐ Kami Tibetan (EA 2525),91408,91408
+,,,,,91782,{},False,,ɖʐ Khalong Tibetan (EA 2534),91781,91781
+,,,,,91965,{},False,,ɖʐ Shixing (EA 2539),91964,91964
+,,,,,92649,{},False,,ɖʐ Abkhaz (Bzyb) (EA 2552),92648,92648
+,,,,,92716,{},False,,ɖʐ gSerpa (EA 2553),92715,92715
+,,,,,93025,{},False,,ɖʐ Ahi (EA 2560),93024,93024
+,,,,,93075,{},False,,ɖʐ Burushaski (Werchikwar) (EA 2561),93074,93074
+,,,,,93706,{},False,,ɖʐ Komi-Permyak (EA 2575),93705,93705
+,,,,,93781,{},False,,ɖʐ Burushaski (Nagar) (EA 2577),93780,93780
+,,,,,94154,{},False,,ɖʐ Southern Pumi (Xinyingpan) (EA 2585),94153,94153
+,,,,,94423,{},False,,ɖʐ Dongwang Tibetan (EA 2591),94422,94422
+,,,,,94796,{},False,,ɖʐ Kalmyk (Standard) (EA 2599),94795,94795
+,,,,,95427,{},False,,ɖʐ Burushaski (Hunza) (EA 2613),95426,95426
+,,,,,95476,{},False,,ɖʐ Themchen Tibetan (EA 2614),95475,95475

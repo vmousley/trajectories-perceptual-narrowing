@@ -1,0 +1,107 @@
+allophones,confidence,description,domainelement_pk,frequency,id,jsondata,marginal,markup_description,name,pk,valueset_pk
+ʈʂ,,,,,277,{},,,ʈʂ Burushaski (SPA 6),277,277
+ɖʐ ʈʂ,,,,,728,{},,,ʈʂ Mandarin Chinese (SPA 16),728,728
+ʈʂ,,,,,3612,{},,,ʈʂ Mazateco (SPA 99),3612,3612
+ʈʂ,,,,,3811,{},,,ʈʂ Aymara (SPA 105),3811,3811
+ʈʂ ʈ,,,,,3839,{},,,ʈʂ Araucanian (SPA 106),3839,3839
+ʈʂ ts,,,,,6897,{},,,ʈʂ Basque (SPA 179),6897,6897
+ʈʂ ʈ,,,,,7104,{},,,ʈʂ Ostyak (SPA 184),7104,7104
+,,,,,9612,{},False,,ʈʂ BURUSHASKI (UPSID 264),9612,9612
+,,,,,10245,{},False,,ʈʂ MANDARIN (UPSID 286),10245,10245
+,,,,,10454,{},False,,ʈʂ HMONG (UPSID 291),10454,10454
+,,,,,11087,{},True,,ʈʂ DAGUR (UPSID 312),11087,11087
+,,,,,11322,{},False,,ʈʂ BASQUE (UPSID 321),11322,11322
+,,,,,12149,{},False,,ʈʂ GUAMBIANO (UPSID 347),12149,12149
+,,,,,13391,{},False,,ʈʂ JAQARU (UPSID 385),13391,13391
+,,,,,13642,{},False,,ʈʂ CAMSA (UPSID 392),13642,13642
+,,,,,13733,{},False,,ʈʂ KHANTY (UPSID 396),13733,13733
+,,,,,15622,{},False,,ʈʂ MAZATEC (UPSID 450),15622,15622
+,,,,,16631,{},False,,ʈʂ NAXI (UPSID 485),16631,16631
+,,,,,17657,{},False,,ʈʂ POHNPEIAN (UPSID 519),17657,17657
+,,,,,17796,{},False,,ʈʂ PAIWAN (UPSID 522),17796,17796
+,,,,,18368,{},False,,ʈʂ SELKUP (UPSID 538),18368,18368
+,,,,,19693,{},False,,ʈʂ TACANA (UPSID 583),19693,19693
+,,,,,19962,{},False,,ʈʂ TSOU (UPSID 593),19962,19962
+ʈʂ,,,,,35433,{},False,,ʈʂ Zapotec (PH 1022),35433,35433
+ʈʂ ʈʂʰ,,,,,35882,{},False,,ʈʂ Palula (Phalura) (PH 1036),35882,35882
+ʈʂ,,,,,38884,{},False,,ʈʂ Matses (PH 1124),38884,38884
+ʈʂ,,,,,39020,{},False,,ʈʂ Western Mam; Tacanec (PH 1128),39020,39020
+ʈʂ,,,,,41740,{},False,,ʈʂ Jiarong (PH 1208),41740,41740
+ʈʂ,,,,,42102,{},False,,ʈʂ Torwali (PH 1219),42102,42102
+ʈʂ,,,,,53318,{},False,,ʈʂ Gimira (GM 1477),53318,53318
+ʈʂ,,,,,53360,{},False,,ʈʂ Bench (GM 1478),53360,53360
+ʈʂ,,,,,56177,{},False,,ʈʂ Ronga (GM 1546),56177,56177
+,,,,,65768,{},,,ʈʂ Shina (RA 1785),65768,65768
+,,,,,66447,{},,,ʈʂ Mapudungun (SAPHON 1802),66447,66447
+,,,,,66816,{},,,ʈʂ Chamicuro (SAPHON 1816),66816,66816
+,,,,,67377,{},,,ʈʂ Yánesha (SAPHON 1838),67377,67377
+,,,,,67787,{},,,ʈʂ Guambiano (SAPHON 1855),67787,67787
+,,,,,69030,{},,,ʈʂ Günün Yajich (SAPHON 1906),69030,69030
+,,,,,69513,{},,,ʈʂ Camsá (SAPHON 1924),69513,69513
+,,,,,69542,{},,,ʈʂ Candoshi-Shapra (SAPHON 1925),69542,69542
+,,,,,69724,{},,,ʈʂ Mochica (SAPHON 1931),69724,69724
+,,,,,69780,{},,,ʈʂ Muniche (SAPHON 1933),69780,69780
+,,,,,71764,{},,,ʈʂ Matís (SAPHON 2007),71764,71764
+,,,,,71785,{},,,ʈʂ Matsés (SAPHON 2008),71785,71785
+,,,,,72053,{},,,ʈʂ Ancash Quechua (SAPHON 2021),72053,72053
+,,,,,72074,{},,,ʈʂ Cajamarca Quechua (SAPHON 2022),72074,72074
+,,,,,72094,{},,,ʈʂ Chachapoyas Quechua (SAPHON 2023),72094,72094
+,,,,,72143,{},,,ʈʂ Ferreñafe Quechua (SAPHON 2025),72143,72143
+,,,,,72223,{},,,ʈʂ Jauja-Huanca Quechua (SAPHON 2029),72223,72223
+,,,,,72246,{},,,ʈʂ North Junín Quechua (SAPHON 2030),72246,72246
+,,,,,72272,{},,,ʈʂ North Junín Quechua (SAPHON 2031),72272,72272
+,,,,,72402,{},,,ʈʂ Yaru Quechua (SAPHON 2037),72402,72402
+,,,,,72674,{},,,ʈʂ Reyesano (SAPHON 2048),72674,72674
+,,,,,72696,{},,,ʈʂ Tacana (SAPHON 2049),72696,72696
+,,,,,74679,{},,,ʈʂ Chipaya (SAPHON 2126),74679,74679
+ʈʂ,,,,,78216,{},False,,ʈʂ Itunyoso Trique (UZ 2216),78216,78216
+ʈʂ,,,,,78754,{},True,,ʈʂ Xumi (UZ 2230),78754,78754
+ʈʂ,,,,,78819,{},False,,ʈʂ Xumi (UZ 2231),78819,78819
+,,,,,79214,{},False,,ʈʂ Hmong Njua (Green Hmong) (EA 2239),79214,79214
+,,,,,79250,{},False,,ʈʂ Udmurt (Standard) (EA 2240),79250,79250
+,,,,,79460,{},False,,ʈʂ Moksha (Southwest) (EA 2245),79460,79460
+,,,,,79960,{},False,,ʈʂ Caodeng rGyalrong (EA 2257),79960,79960
+,,,,,80436,{},False,,ʈʂ Yongning Na (Mosuo) (EA 2267),80436,80436
+,,,,,80543,{},False,,ʈʂ Ishkashimi (EA 2270),80543,80543
+,,,,,81311,{},False,,ʈʂ Munji (EA 2289),81311,81311
+,,,,,81625,{},False,,ʈʂ Puxi (EA 2298),81625,81625
+,,,,,81976,{},False,,ʈʂ Balti (Kharkoo) (EA 2306),81976,81976
+,,,,,82248,{},False,,ʈʂ Daur (EA 2312),82248,82248
+,,,,,82897,{},False,,ʈʂ Rgyalthang Tibetan (EA 2327),82897,82897
+,,,,,83581,{},False,,ʈʂ Rusyn (Lemko) (EA 2343),83581,83581
+,,,,,83943,{},False,,ʈʂ Northern Cuona (EA 2350),83943,83943
+,,,,,85031,{},False,,ʈʂ Southern Cuona (EA 2379),85031,85031
+,,,,,85234,{},False,,ʈʂ Yodzyak Komi (EA 2384),85234,85234
+,,,,,86242,{},False,,ʈʂ Japhug (EA 2407),86242,86242
+,,,,,86465,{},False,,ʈʂ Eastern Mari (EA 2413),86465,86465
+,,,,,86776,{},False,,ʈʂ Zhongu Tibetan (EA 2420),86776,86776
+,,,,,87119,{},False,,ʈʂ Northern Qiang (Yadu) (EA 2429),87119,87119
+,,,,,87288,{},False,,ʈʂ Eastern Khanty (Vakh) (EA 2434),87288,87288
+,,,,,88318,{},False,,ʈʂ Komi-Zyrian (Syktyvkar) (EA 2460),88318,88318
+,,,,,89042,{},False,,ʈʂ Nyinpa Cone (EA 2474),89042,89042
+,,,,,89157,{},False,,ʈʂ Dongxiang (EA 2477),89157,89157
+,,,,,89435,{},False,,ʈʂ Nuosu (Black Yi) (EA 2483),89434,89434
+,,,,,89575,{},False,,ʈʂ Northern Qiang (Hongyan) (EA 2486),89574,89574
+,,,,,90300,{},False,,ʈʂ Mongghul (Huzhu Monguor) (EA 2501),90299,90299
+,,,,,90348,{},False,,ʈʂ Labrang Tibetan (EA 2502),90347,90347
+,,,,,90499,{},False,,ʈʂ Meadow Mari (Joškar-Ola) (EA 2506),90498,90498
+,,,,,90860,{},False,,ʈʂ Wakhi (EA 2514),90859,90859
+,,,,,90933,{},False,,ʈʂ Asturian (Western) (EA 2516),90932,90932
+,,,,,91462,{},False,,ʈʂ Kami Tibetan (EA 2525),91461,91461
+,,,,,91709,{},False,,ʈʂ Meadow Mari (Volga) (EA 2532),91708,91708
+,,,,,91830,{},False,,ʈʂ Khalong Tibetan (EA 2534),91829,91829
+,,,,,92017,{},False,,ʈʂ Shixing (EA 2539),92016,92016
+,,,,,92468,{},False,,ʈʂ Achang (Lianghe) (EA 2548),92467,92467
+,,,,,92758,{},False,,ʈʂ gSerpa (EA 2553),92757,92757
+,,,,,92864,{},False,,ʈʂ Mangghuer (Minhe Monguor) (EA 2556),92863,92863
+,,,,,92955,{},False,,ʈʂ Shigatse Tibetan (EA 2558),92954,92954
+,,,,,93058,{},False,,ʈʂ Ahi (EA 2560),93057,93057
+,,,,,93109,{},False,,ʈʂ Burushaski (Werchikwar) (EA 2561),93108,93108
+,,,,,93730,{},False,,ʈʂ Komi-Permyak (EA 2575),93729,93729
+,,,,,93820,{},False,,ʈʂ Burushaski (Nagar) (EA 2577),93819,93819
+,,,,,94193,{},False,,ʈʂ Southern Pumi (Xinyingpan) (EA 2585),94192,94192
+,,,,,94471,{},False,,ʈʂ Dongwang Tibetan (EA 2591),94470,94470
+,,,,,94820,{},False,,ʈʂ Kalmyk (Standard) (EA 2599),94819,94819
+,,,,,95460,{},False,,ʈʂ Burushaski (Hunza) (EA 2613),95459,95459
+,,,,,95511,{},False,,ʈʂ Themchen Tibetan (EA 2614),95510,95510
+,,,,,95574,{},False,,ʈʂ Erzya (Standard) (EA 2616),95573,95573

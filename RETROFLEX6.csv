@@ -1,0 +1,92 @@
+allophones,confidence,description,domainelement_pk,frequency,id,jsondata,marginal,markup_description,name,pk,valueset_pk
+ʐ,,,,,737,{},,,ʐ Mandarin Chinese (SPA 16),737,737
+ʐˀ ʐ,,,,,3900,{},,,ʐ Wapishana (SPA 108),3900,3900
+ʐ ʂ,,,,,4020,{},,,ʐ Amuesha (SPA 112),4020,4020
+ʐ,,,,,6539,{},,,ʐ Pashto (SPA 173),6539,6539
+,,,,,8104,{},False,,ʐ AMUESHA (UPSID 217),8104,8104
+,,,,,10067,{},False,,ʐ HIGHLAND CHINANTEC (UPSID 279),10067,10067
+,,,,,10251,{},False,,ʐ MANDARIN (UPSID 286),10251,10251
+,,,,,10459,{},False,,ʐ HMONG (UPSID 291),10459,10459
+,,,,,11092,{},True,,ʐ DAGUR (UPSID 312),11092,11092
+,,,,,16639,{},False,,ʐ NAXI (UPSID 485),16639,16639
+,,,,,17771,{},False,,ʐ PASHTO (UPSID 521),17771,17771
+,,,,,17799,{},False,,ʐ PAIWAN (UPSID 522),17799,17799
+,,,,,19966,{},False,,ʐ TSOU (UPSID 593),19966,19966
+ʐ,,,,,30737,{},False,,ʐ Huichol (PH 886),30737,30737
+ʐ,,,,,31231,{},False,,ʐ Kada (PH 901),31231,31231
+ʐ ʐd̪,,,,,35438,{},False,,ʐ Zapotec (PH 1022),35438,35438
+ʐ ʐʰ,,,,,35888,{},False,,ʐ Palula (Phalura) (PH 1036),35888,35888
+ʐ,,,,,36696,{},False,,ʐ San Bartolomé Zoogocho Zapotec (PH 1059),36696,36696
+ʐ,,,,,37335,{},False,,"ʐ Tlacolula Valley Zapotec; Western Tlacolula Zapotec; Zapotec, San Juan Guelavía (PH 1078)",37335,37335
+ʐ,,,,,38339,{},False,,ʐ Sochiapan Chinantec (PH 1108),38339,38339
+ʐ,,,,,40061,{},False,,ʐ Chimborazo Quichua (PH 1157),40061,40061
+ʐ,,,,,42110,{},False,,ʐ Torwali (PH 1219),42110,42110
+ʐ,,,,,42380,{},False,,ʐ Kinnauri; Kanauri (PH 1226),42380,42380
+ʐ,,,,,53323,{},False,,ʐ Gimira (GM 1477),53323,53323
+ʐ,,,,,53365,{},False,,ʐ Bench (GM 1478),53365,53365
+ʐ,,,,,56186,{},False,,ʐ Ronga (GM 1546),56186,56186
+,,,,,62795,{},,,ʐ Brokskat (RA 1715),62795,62795
+,,,,,64556,{},,,ʐ Ladakhi (RA 1756),64556,64556
+,,,,,65775,{},,,ʐ Shina (RA 1785),65775,65775
+,,,,,66116,{},,,ʐ Toda (RA 1793),66116,66116
+,,,,,66451,{},,,ʐ Mapudungun (SAPHON 1802),66451,66451
+,,,,,66724,{},,,ʐ Baniwa (SAPHON 1812),66724,66724
+,,,,,67254,{},,,ʐ Wapichana (SAPHON 1833),67254,67254
+,,,,,67383,{},,,ʐ Yánesha (SAPHON 1838),67383,67383
+,,,,,70088,{},,,ʐ Yahgan (SAPHON 1944),70088,70088
+,,,,,70112,{},,,ʐ Yurakaré (SAPHON 1945),70112,70112
+,,,,,71661,{},,,ʐ Chácobo (SAPHON 2002),71661,71661
+,,,,,71950,{},,,ʐ Yaminawa (SAPHON 2016),71950,71950
+,,,,,72078,{},,,ʐ Cajamarca Quechua (SAPHON 2022),72078,72078
+,,,,,73320,{},,,ʐ Awetí (SAPHON 2076),73320,73320
+ʐ,,,,,78827,{},False,,ʐ Xumi (UZ 2231),78827,78827
+,,,,,79256,{},False,,ʐ Udmurt (Standard) (EA 2240),79256,79256
+,,,,,79283,{},False,,ʐ Meadow Mari (Morki-Sernur) (EA 2241),79283,79283
+,,,,,79366,{},False,,ʐ Moksha (Standard) (EA 2243),79366,79366
+,,,,,79466,{},False,,ʐ Moksha (Southwest) (EA 2245),79466,79466
+,,,,,80162,{},False,,ʐ Kildin Saami (EA 2260),80162,80162
+,,,,,80209,{},False,,ʐ Russian (Standard) (EA 2261),80209,80209
+,,,,,80443,{},False,,ʐ Yongning Na (Mosuo) (EA 2267),80443,80443
+,,,,,80476,{},False,,ʐ Beserman (Šamardan) (EA 2268),80476,80476
+,,,,,80549,{},False,,ʐ Ishkashimi (EA 2270),80549,80549
+,,,,,80663,{},False,,ʐ Hill Mari (Kozmodemjansk) (EA 2273),80663,80663
+,,,,,81318,{},False,,ʐ Munji (EA 2289),81318,81318
+,,,,,81640,{},False,,ʐ Puxi (EA 2298),81640,81640
+,,,,,82257,{},False,,ʐ Daur (EA 2312),82257,82257
+,,,,,82662,{},False,,ʐ Wazirwola (North Wazīrī) (EA 2322),82662,82662
+,,,,,82909,{},False,,ʐ Rgyalthang Tibetan (EA 2327),82909,82909
+,,,,,83589,{},False,,ʐ Rusyn (Lemko) (EA 2343),83589,83589
+,,,,,84090,{},False,,ʐ Udmurt (Udmurt Tašly) (EA 2353),84090,84090
+,,,,,85240,{},False,,ʐ Yodzyak Komi (EA 2384),85240,85240
+,,,,,85921,{},False,,ʐ Udmurt (Bavly) (EA 2400),85921,85921
+,,,,,86470,{},False,,ʐ Eastern Mari (EA 2413),86470,86470
+,,,,,86781,{},False,,ʐ Zhongu Tibetan (EA 2420),86781,86781
+,,,,,87135,{},False,,ʐ Northern Qiang (Yadu) (EA 2429),87135,87135
+,,,,,88323,{},False,,ʐ Komi-Zyrian (Syktyvkar) (EA 2460),88323,88323
+,,,,,88737,{},False,,ʐ Abkhaz (Abzhywa) (EA 2468),88737,88737
+,,,,,89162,{},False,,ʐ Dongxiang (EA 2477),89162,89162
+,,,,,89445,{},False,,ʐ Nuosu (Black Yi) (EA 2483),89444,89444
+,,,,,89587,{},False,,ʐ Northern Qiang (Hongyan) (EA 2486),89586,89586
+,,,,,90269,{},False,,ʐ Bashkir (Standard) (EA 2500),90268,90268
+,,,,,90505,{},False,,ʐ Meadow Mari (Joškar-Ola) (EA 2506),90504,90504
+,,,,,90867,{},False,,ʐ Wakhi (EA 2514),90866,90866
+,,,,,91132,{},False,,ʐ Soghpo Tibetan (EA 2519),91131,91131
+,,,,,91714,{},False,,ʐ Meadow Mari (Volga) (EA 2532),91713,91713
+,,,,,91889,{},False,,ʐ Udmurt (Krasnoufimsk) (EA 2536),91888,91888
+,,,,,92038,{},False,,ʐ Shixing (EA 2539),92037,92037
+,,,,,92479,{},False,,ʐ Achang (Lianghe) (EA 2548),92478,92478
+,,,,,92700,{},False,,ʐ Abkhaz (Bzyb) (EA 2552),92699,92699
+,,,,,93016,{},False,,ʐ Malayalam (EA 2559),93015,93015
+,,,,,93067,{},False,,ʐ Ahi (EA 2560),93066,93066
+,,,,,93735,{},False,,ʐ Komi-Permyak (EA 2575),93734,93734
+,,,,,94013,{},False,,ʐ Hill Mari (Jaransk) (EA 2581),94012,94012
+,,,,,94203,{},False,,ʐ Southern Pumi (Xinyingpan) (EA 2585),94202,94202
+,,,,,94236,{},False,,ʐ Southwestern Pashto (Kandahar) (EA 2586),94235,94235
+,,,,,94485,{},False,,ʐ Dongwang Tibetan (EA 2591),94484,94484
+,,,,,94828,{},False,,ʐ Kalmyk (Standard) (EA 2599),94827,94827
+,,,,,95377,{},False,,ʐ Tamil (EA 2611),95376,95376
+,,,,,95580,{},False,,ʐ Erzya (Standard) (EA 2616),95579,95579
+,,,,,96281,{},False,,ʐ Marringarr (ER 2638),96280,96280
+,,,,,96336,{},False,,ʐ Marti Ke (ER 2640),96335,96335
+,,,,,96369,{},False,,ʐ Emmi (ER 2641),96368,96368
+,,,,,103756,{},False,,ʐ Warluwarra (ER 2948),103755,103755

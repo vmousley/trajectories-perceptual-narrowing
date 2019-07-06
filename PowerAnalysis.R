@@ -55,6 +55,10 @@ design_result <- ANOVA_design("2w*2b",
                               c("group", "monolingual", "bilingual", "trial", "same", "switch"),
                               sd = 0.5,
                               r = 0.5)
+# We have to estimate some of these parameters because we don't have 
+  # data from Casaus et al. (unpublished thesis). 
+  # Means must stay between 0 - 8 because of fixed trial duration of 8 seconds.
+  # When we change means dramatically, power does not change significantly.
 
 # Simulation-based power calculations -------------------------------------
 
@@ -64,7 +68,7 @@ design_result <- ANOVA_design("2w*2b",
 # repeatedly simulating normally distributed data.
 
 ANOVA_power(design_result, alpha = 0.05, nsims = 1000)
-# Power for Trial*Group int = 90.50 with an n = 37
+# Power for Trial*Group int = 91.20 with an n = 37
 
 ### Simulate a dataset that has exactly the desired properties
 # every cell of the design has n datapoints that have the 

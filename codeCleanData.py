@@ -58,7 +58,7 @@ for file in listFiles:  # For every file (corresponding to one participant) in P
     # post-test). In the csv file, this data is under "SumOnA" (column 12)
 
     habTrials = 0  # Counts habituation trials
-    LTAttenGet = []  # Counts LT on attention getters (pre and post)
+    LTAttenGet = [0,1]  # Counts LT on attention getters (pre and post)
     LTSame = 0  # Counts LT on same trials
     LTSwitch = 0  # Counts LT on switch trials
     overallLT = 0  # Counts overall experiment LT

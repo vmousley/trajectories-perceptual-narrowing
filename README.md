@@ -1,1 +1,1 @@
-This project contains materials (e.g., scripts, practice data files, etc.) to replicate the analyses conducted in: Mousley, V. L., MacSweeney, M., & Mercure, E. (Stage 1: Registered Report, submitted to Developmental Science). Developmental trajectories among monolingual and bilingual infants. 
+This project contains materials (e.g., scripts, practice data files, etc.) to replicate the analyses conducted in: XXXX (Stage 1: Registered Report, submitted to Developmental Science). Developmental trajectories among monolingual and bilingual infants. 

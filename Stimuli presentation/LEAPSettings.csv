@@ -1,0 +1,48 @@
+dataColumns,"['sNum', 'months', 'days', 'sex', 'cond', 'condLabel', 'trial', 'GNG', 'trialType', 'stimName', 'habCrit', 'sumOnA', 'numOnA', 'sumOffA', 'numOffA', 'sumOnB', 'numOnB', 'sumOffB', 'numOffB']"
+prefix,LEAP
+dataloc,data\
+maxDur,"{'Hab': 1.0, 'ISI': 2.0, 'AttenGet': 12.0, 'Same': 1.0, 'Switch': 1.0}"
+playThrough,"{'Hab': 0, 'ISI': 2, 'AttenGet': 2, 'Same': 2, 'Switch': 2}"
+movieEnd,[]
+maxOff,"{'Same': 2.0, 'Switch': 2.0, 'Hab': 2.0, 'AttenGet': 2.0, 'ISI': 2.0, 'DenA': 2.0}"
+minOn,"{'Same': 1.0, 'Switch': 1.0, 'Hab': 1.0, 'AttenGet': 1.0, 'ISI': 1.0, 'DenA': 1.0}"
+blindPres,0
+autoAdvance,"['Same', 'Switch', 'Hab', 'AttenGet', 'ISI', 'DenA']"
+randPres,True
+condPath,
+condFile,conditions.csv
+condList,"['LEAP01', 'LEAP02', 'LEAP03', 'LEAP04', 'LEAP05', 'LEAP06', 'LEAP07', 'LEAP08', 'LEAP09', 'LEAP10']"
+trialOrder,"['AttenGet', 'Hab', 'ISI', 'Same', 'Same', 'Same', 'Same', 'Same', 'Same', 'Same', 'Same', 'ISI', 'Switch', 'Switch', 'Switch', 'Switch', 'Switch', 'Switch', 'Switch', 'Switch', 'AttenGet']"
+maxHabTrials,25
+setCritWindow,3
+setCritDivisor,1.66
+setCritType,Peak
+habThresh,5.0
+metCritWindow,3
+metCritDivisor,1.0
+metCritStatic,Fixed
+habTrialList,[]
+stimPres,0
+stimPath,stimuli\
+stimNames,"{'Hab': ['DenA', 'DenB', 'DenC', 'DenD', 'DenE', 'DenF', 'DenG', 'DenH', 'DenA', 'DenB', 'DenC', 'DenD', 'DenE', 'DenF', 'DenG', 'DenH', 'DenA', 'DenB', 'DenC', 'DenD', 'DenE', 'DenF', 'DenG', 'DenH'], 'ISI': ['yellowlightshort.mov'], 'AttenGet': ['AttenGet.mov'], 'Same': ['DenA', 'DenB', 'DenC', 'DenD', 'DenE', 'DenF', 'DenG', 'DenH'], 'Switch': ['RetA', 'RetB', 'RetC', 'RetD', 'RetE', 'RetF', 'RetG', 'RetH']}"
+stimList,"{'RetA': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETa1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetB': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETb1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetC': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETc1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetD': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETd1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetE': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETe1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetF': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETf1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetG': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETg1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'RetH': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\RETh1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'yellowlightshort.mov': {'stimType': 'Movie', 'stimLoc': 'stimuli\\yellowlightshort.mov'}, 'AttenGet.mov': {'stimType': 'Movie', 'stimLoc': 'stimuli\\AttenGet.mov'}, 'DenA': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENa1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenB': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENb1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenC': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENc1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenD': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENd1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenE': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENe1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenF': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENf1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenG': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENg1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}, 'DenH': {'stimType': 'Image with audio', 'audioLoc': 'stimuli\\DENh1s.aiff', 'imageLoc': 'stimuli\\WerkerCheckerboard_mov.jpeg'}}"
+screenWidth,1280
+screenHeight,1024
+screenColor,black
+movieWidth,1280
+movieHeight,1024
+screenIndex,1
+ISI,"{'Same': 0.0, 'Switch': 0.0, 'Hab': 0.0, 'AttenGet': 0.0, 'ISI': 0.1, 'DenA': 0.0}"
+freezeFrame,0.0
+playAttnGetter,{}
+attnGetterList,"{'PyHabDefault': {'stimType': 'Audio', 'stimName': 'upchime1.wav', 'stimDur': 2, 'stimLoc': 'stimuli\\attnGetters\\upchime1.wav', 'shape': 'Rectangle', 'color': 'yellow'}}"
+folderPath,C:\Users\CBCD\Desktop\LEAP\PyHab-master\LEAP\
+trialTypes,"['Hab', 'ISI', 'AttenGet', 'Same', 'Switch']"
+prefLook,0
+startImage,
+endImage,
+nextFlash,0
+baseCondList,[]
+baseCondFile,
+blockList,{}
+calcHabOver,['Hab']

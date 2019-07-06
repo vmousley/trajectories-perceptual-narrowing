@@ -1,103 +1,159 @@
 # "Developmental trajectories of perceptual narrowing among monolingual and bilingual infants"
 # Stage 1: Registered Report
-# XXXXXXXXXXXXXXXXXXXXX
+# XXXXXXXXXXXXXXXXXX
 # Submitted to Developmental Science
 
 # Dependencies ------------------------------------------------------------
 setwd("~/trajectories-perceptual-narrowing")
 require("praise")
-require("plyr")
 require("dplyr")
-
-# Importing Data ----------------------------------------------------------
-# Eye-tracking ANALYSIS data, cleaned by codeDataClean.py file (from a raw file containing all participants).
-# NOTE: exclusion occurs in codeDataClean.py
-cleandata <- data.frame(read.csv("cleandata.csv")); View(cleandata); praise()
-
-# Then import behavioural data frames, which include all hand-scored 
-# data required for analyses (e.g., questionnaires, Mullens, etc)
-manualdata <- data.frame(read.csv("test.csv")); View(manualdata); praise ()
-
-# Merge them to create a clean & complete analysis data set
-mydata <- merge(cleandata, manualdata, by.x = 1, by.y = 0, all.x = TRUE); View(mydata)
-
-mydata <- data.frame(read.csv("XXXXX.csv"))
+require("lme4")
+require("reshape2")
+require ("ggplot2")
+require("car")
 
 # Pre-Processing ----------------------------------------------------------
 
-# Numeric to Categorical (Group)
-mydata$Group <- as.factor(mydata$Group)
-mydata$Group <- revalue(mydata$Group, 
-                        c("0"="monolingual", "1"="bilingual"))
+# NOTE: Important pre-processing steps occur in the python script 'codeCleanData.py'
+  # located in 'Analysis Scripts (Syntax)' folder of the OSF profile.
+  # This script converts raw data into two .csv files: 
+    # 1: 'allCleanData.csv' which contains all eye-tracking data for all participants
+    # 2: 'analysisData.csv' which contains all eye-tracking data *for included participants only*
 
-# Define outcome: total looking time to test phase
-mydata$TotalTest <- cbind(mydata$Same + mydata$Switch)
+  # Specific inclusion criteria met in this pre-processing script are that infants have BOTH: 
+    # 1: Habituated within 9 - 24 habituation trials 
+      # 'habTrials > 24 or habTrials < 9'
+    # 2: Looked for at least 1 second in test trials
+      # 'LTSame < 1 or LTSwitch < 1'
+
+  # Therefore, this script constitutes the analysis pipeline for all pre-processed eye-tracking data.
+
+# Importing Data ----------------------------------------------------------
+
+# Import pre-processed eye-tracking data (inclusion criteria mets)
+cleandata <- data.frame(read.csv("analysisdata.csv"))#; View(cleandata)
+mydata <- cleandata
+
+# Import behavioural data, which include all hand-scored 
+  # data required for analyses (e.g., questionnaires, Mullen, etc)
+behavedata <- data.frame(read.csv("behaviouralData.csv"))#; View(behavedata)
+
+# Clean behavedata to match number of participants in excluded data set
+A <- cleandata$Participant.ID
+B <- behavedata$ID
+identical(A, B)
+# False, means there are excluded participants
+  # can see in this example that clean data doesn't include
+  # p's 1, 5, or 10
+  # NTS: eventually make this automatic
+
+# Alter behavedata accordingly 
+behavedata <- behavedata[-c(1, 5, 10), ]
+B <- behavedata$ID
+identical(A, B)
+# Now it's true, means they contain same included p's
+
+# You now have all the data you need!
+praise()
+
+# Clean for modeling ------------------------------------------------------
+ogdata <- mydata # save original data set in case you need it later
+
+# rename relevant variables
+names(mydata)[names(mydata)=="Participant.ID"] <- "id"
+names(mydata)[names(mydata)=="Sex..1...male..2...female."] <- "sex"
+names(mydata)[names(mydata)=="LT.Pre.test"] <- "LTPre"
+names(mydata)[names(mydata)=="LT.Same.Trials"] <- "LTSame"
+names(mydata)[names(mydata)=="LT.Switch.Trials"] <- "LTSwitch"
+names(mydata)[names(mydata)=="LT.Post.test"] <- "LTPost"
+names(mydata)[names(mydata)=="LT.total.of.pre.and.post.test"] <- "TotalTest"
+
+# save only the columns you need
+df <- mydata[ , c(1, 2)]
+
+# add relevant behavioural variables to mydata, add new column for trial
+df$age <- round(behavedata$age, 2) # NTS: age as integer
+df$group <- behavedata$group
+
+# give each participant 2 rows
+df <- df %>% slice(rep(1:n(), each = 2))
+
+# make new column for trial type
+df$trial <- NA
+
+# reshape looking time data to long format
+  # could probably melt eloquently, but idk how so i'm forcing it
+same <- mydata$LTSame # save same looking times
+switch <- mydata$LTSwitch # save switch looking times
+ltsb <- rbind(same, switch) # bind them together w ps as columns (b for 'before')
+ltsa <- melt(ltsb) # put in correct long order (a for 'after')
+
+# check visually to be sure this was done correctly 
+ltsb; ltsa
+  # make sure that columns from ltsb ([,1], [,2], [,3], [,4], etc) 
+  # are alternating over 'same' and 'switch' in ltsa correctly
+  # SUPER important: if incorrect, all analysis data will be wrong
+
+# input data in correct format back into df
+df$LT <- ltsa$value
+df$trial <-ltsa$Var1
+
+# Data is ready for modelling
+praise()
+
+# Log transformation ------------------------------------------------------
+
+# Per Csibra et al. (2014), log transform looking time before
+# Modeling or checking assumptions 
+
+# NTS: ADD!
 
 # Graphical Analysis ------------------------------------------------------
 
-# Age x Difference Score
-plotAgexDiff <- plot(mydata$Age, mydata$TotalTest, 
-                     xlab="Age (days)", 
-                     ylab="Total LT to Test", 
-                     cex=1, pch="X", 
-                     cex.axis=1, 
-                     cex.lab=1, col='blue')
+# NTS: Not finished, need to add illustration of group and trial effects
 
-# Pairs: Difference Score x Age
-pairs(mydata)
-pairs(~TotalTest+Age, data=mydata)
+# Age x LT
+plotAgexLT <- ggplot(df, aes(age, LT)) + geom_point() +
+  labs(x ='Age (days)', y = 'LT (seconds)') +
+  labs(title = 'Age x LT') +
+  labs(tag ='A')
+plotAgexLT
 
-# Plot: Difference Score and Group
-plot(mydata$TotalTest, mydata$Group)
+# Age x Group x LT
+plotAgexGroupxLT <- ggplot(df, aes(age, LT)) + geom_point() + 
+  labs(x ='Age (days)', y = 'LT (seconds)') + 
+  labs(title = 'Age x Group x LT') +
+  labs(tag ='B')
+plotAgexGroupxLT
 
-# Language Group x Difference Score (****** ISSUE WITH MEANS ******)
-groupscatter <- plot(as.numeric(mydata$Group), mydata$DiffScore,
-                     ylab="Difference Score (Same - Switch)", xaxt="n",
-                     xlab="Language Group",
-                     cex=1.5, pch="*", 
-                     cex.axis=1, 
-                     cex.lab=1, col='purple')
-axis(1,1:2, labels=levels(mydata$Group), cex.axis=1)
-groupscatter <- points(c(1,2), 
-                       c(mean(mydata$DiffScore[mydata$Group=='monolingual']), 
-                         mean(mydata$DiffScore[mydata$Group=='bilingual'])), pch="---", cex=4)
-
-
-# Difference score distribution
-hist <- hist(mydata$DiffScore, 
-             xlab = "Difference Score (Same - Switch)", 
-             ylab = "Frequency")
-
-
-# Basic Functions ---------------------------------------------------------
-
-# Descriptive Statistics
-descriptives <- summary(mydata)
-dim(mydata)
-names(mydata)
-
-# Corr between Age and Difference Score
-cor(mydata$TotalTest, mydata$Age, method="pearson")
-
-# Associations between Difference Score ~ Group
-tapply(mydata$TotalTest, mydata$Group, summary)
-t.test(TotalTest ~ Group, data=mydata)
-summary(aov(TotalTest ~ Group, data=mydata))
-wilcox.test(TotalTest ~ Group, data=mydata)
-kruskal.test(TotalTest ~ Group, data=mydata)
+# Age x Group x TT x LT
+plotAgexGroupxTTxLT <- ggplot(df, aes(age, LT)) + geom_point() + 
+  labs(x ='Age (days)', y = 'LT (seconds)') + 
+  labs(title = 'Age x Group x TT x LT') +
+  labs(tag ='B')
+plotAgexGroupxTTxLT
 
 # Linear Modelling --------------------------------------------------------
 
-## Note to self: ASSUMPTIONS! 
-# All observations independent
-# y is linearly associated with predictors
-# errors are normally distributed around 0 with constant variance across all predicted y values
+### ASSUMPTIONS OF LINEAR MIXED EFFECTS MODELS ###
+  # 1: Explanatory variables are related linearly to the outcoome.
+  # 2: The errors have constant variance.
+  # 3: The errors are independent.
 
-m0 <- lm(TotalTest ~ 1, data=mydata)
-m1 <- lm(TotalTest ~ Age*Group*Switch, data=mydata)
-summary(m1)
+# NOTES TO SELF ABOUT TESTING MODEL ASSUMPTIONS
+# Plotting the residuals against the explanatory variable will indicate if the wrong model has been fitted (i.e. higher order terms are needed) or if there is some dependence on some other explanatory variable. 
+# If this is the case some obvious patterning will be visible in the plot. 
+# Plotting the residuals in order, any trend visible may indicate seasonal pattern or autocorrelation.
+# Plotting the residuals against the fitted values will indicate if there is non-constant error variance, i.e. if the variance increases with the mean the residuals will fan out as the fitted value increases. Usually transforming the data, or using another distribution will help. 
+# A Normal probability plot, histogram of the residuals or say a Wilk-Shapiro test will indicate if the normality
 
-names(summary(m1))
+m0 <- lmer(LT ~ 1 + (1|id), data=df)
+m1 <- lmer(LT ~ age*group*trial + (1|id), data=df)
+  # Outcome = looking time
+  # Predictors: age (days), group (M v B), trial (same v switch)
+  # The fixed effect tells the model to fit individual trajectories for each participant
+
+# Exploration of model ----------------------------------------------------
 
 # Isolate coefficients and CIs 
 coefficients(m1)
@@ -112,22 +168,11 @@ BIC(m1)
 fit.m <- fitted(m1); summary(fit.m)
 predict.m <- predict(m1); summary(predict.m)
 
-plot(as.numeric(mydata$Group), mydata$TotalTest, 
-     ylab = "Total Test LT",
-     xlab = "Language Group", 
-     cex=1, pch="*", xaxt="n", col="blue", cex.axis=1, 
-     cex.lab=1)
-axis(1, 1:2, labels=c("Monolingual", "Bilingual"), cex.axis=1)
-points(mydata$Group, fit.m, pch="---", cex=2)
-
 residuals(m1)
-rstandard(m1)
 rstudent(m1)
 
 # Explore residuals
-hist(rstandard(m1))
-hist(dffits(m1))
-hist(dfbetas(m1)[,"Age"], nclass=10)
+
 # tells you how much the outcome will change if you take out that predictor (?double check)
 hist(cooks.distance(m1),nclass=10)
 
@@ -147,5 +192,4 @@ layout(matrix(c(1,2,3,4),2,2))
 plot(m1)
 
 # Collinearity measures 
-require(car)
 vif(m1)

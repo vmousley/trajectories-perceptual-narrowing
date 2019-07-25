@@ -94,7 +94,7 @@ for file in listFiles:  # For every file (corresponding to one participant) in d
     diffScoreSwitchSame = LTSwitch-LTSame  # LT in switch minus same condition
 
     # EXCLUSION CRITERIA;
-    # The criteria is: 1) baby took more than 24 trials or less than 9 trials to habituate,
+    # The criteria is: 1) baby took more than 33 trials or less than 9 trials to habituate,
     # 2) LT at same or switch trials totalled to less than 1 second.
     if habTrials > 33 or habTrials < 9 or LTSame < 1 or LTSwitch < 1:
         # Participant excluded

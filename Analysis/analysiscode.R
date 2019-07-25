@@ -4,7 +4,7 @@
 # Submitted to Developmental Science
 
 # Dependencies ------------------------------------------------------------
-setwd("~/trajectories-perceptual-narrowing")
+setwd("~/Desktop/temp")
 require("praise")
 require("dplyr")
 require("lme4")
@@ -31,7 +31,7 @@ require("car")
 # Importing Data ----------------------------------------------------------
 
 # Import pre-processed eye-tracking data (inclusion criteria mets)
-cleandata <- data.frame(read.csv("analysisdata.csv"))#; View(cleandata)
+cleandata <- data.frame(read.csv("analysisData.csv"))#; View(cleandata)
 mydata <- cleandata
 
 # Import behavioural data, which include all hand-scored 
@@ -48,7 +48,7 @@ identical(A, B)
   # NTS: eventually make this automatic
 
 # Alter behavedata accordingly 
-behavedata <- behavedata[-c(1, 5, 10), ]
+behavedata <- behavedata[-c(3:5, 8:33), ]
 B <- behavedata$ID
 identical(A, B)
 # Now it's true, means they contain same included p's

@@ -1,42 +1,47 @@
 # "Developmental trajectories of perceptual narrowing among monolingual and bilingual infants"
+# Stage 1: Registered Report
+# XXXXXXXXXXXXXXXXXXXXX
+# Submitted to Developmental Science
+
 
 # DESCRIPTION:
-# This code converts all output from PyHAB to two csv files. The files are identical, but one has all participants and
-# the other has only those that passed all exclusion criteria.
+# This code processes all output from PyHab into two csv files. The two csv files are identical, but one has processed
+# data from ALL participants and one has processed data from all NON-EXCLUDED participants
 # The files contain participant ID, sex, how many trials the baby took to habituate, and different total
 # looking times across experiment phases. Looking time is shortened to LT throughout.
 
 # HOW DOES IT WORK:
-# When extracting data from the PyHAB output, this code uses indexes. For example, PyHAB output has sex on column 4,
+# When extracting data from the PyHab output, this code uses indexes. For example, PyHAB output has sex on column 4,
 # the code will therefore assign the value on the second row in column 4 to variable 'sex':
 # sex = dataExtracted[1][3] (indexing starts at 0)
 
 # BEFORE RUNNING THIS CODE:
-# Make sure all data is in one folder, the name of that folder needs to be inserted in line 23, currently set
-# to PyHABData. This code needs to be run from the folder above that. For example, the code can run in /LEAP,
-# whilst the data is in /LEAP/PyHABData.
+# Make sure the codeCleanData.py file and the data-folder is in the same directory. This code is set-up to run on the
+# sample data in folder 'SampleData'. With a new data-set, names/paths need to be adjusted on line 26.
 
 import os
 from os import listdir
 import csv
 
+path = ('SampleData')
+
 # OBTAINING LIST OF NON-VERBOSE CSV FILES IN FOLDER
-listFiles = listdir("data") #'listFiles' is now a list of filenames within the 'PyHABData' folder
+listFiles = listdir(path) #'listFiles' is now a list of filenames within the 'DATA' folder
 allCleanData = []
 
 removeThese = []
 for file in listFiles:
-    # Of the output files from Pyhab, we are only interested in non-verbose and non-stats files.
-    # Next line of code filters out the relevant files.
-    if not (file[-8:-6]) == '20':  
+    # Of the output files from PyHab we are only interested in non-verbose and non-stats files.
+    # Next line of code filters this.
+    if not (file[-8:-6]) == '20':
         removeThese.append(file)
 
 for file in removeThese:
     listFiles.remove(file)
 
-# EXTRACTING DATA FROM EACH FILE
-for file in listFiles:  # For every file (corresponding to one participant) in PyHABData, the following code runs:
-    with open("data/"+file) as rawDataFile:
+## EXTRACTING DATA FROM EACH FILE IN DATAFOLDER
+for file in listFiles:  # For every file (corresponding to one participant) in data-folder, the following code runs:
+    with open(path+'/'+file) as rawDataFile:
         reader = csv.reader(rawDataFile)
         rawData = []  # This list will contain all information in participant file.
         rowCount=0 # This is to keep track of how many rows the csv file is. Later on the code uses this number when
@@ -46,8 +51,8 @@ for file in listFiles:  # For every file (corresponding to one participant) in P
             rowCount += 1
 
     # DEMOGRAPHICS (partID, group, age, sex, condition):
-    partID = int(rawData[1][0])  ## collects participant number, on second row of first column in csv file
-    sex = rawData[1][3]  ## collects sex on row 2 column 4. NOTE: 1 is male, 2 is female
+    partID = int(rawData[1][0])  # collects participant number (which is on second row of first column in csv file)
+    sex = rawData[1][3]  # collects sex on row 2 column 4. NOTE: 1 is male, 2 is female
     condition = int(rawData[1][5][-2:])  # This obtains the sound condition, by getting the integer value of the
     # last two letters of the label e.g. "LEAP07" => 7
 
@@ -100,7 +105,7 @@ for file in listFiles:  # For every file (corresponding to one participant) in P
 
     # ADDING ALL CLEAN DATA TO ONE LIST
     # The order of variables in the list will be the order of information in the new
-    # participant row in the resulting csv file. The column headers should match the order in the list.
+    # participant row in the resulting csv file. The order of column headers should match the order in the list.
 
     cleanDataList = []
     cleanDataList.extend((partID, sex, condition, habTrials, PreTestLT, LTSame,
@@ -111,27 +116,29 @@ for file in listFiles:  # For every file (corresponding to one participant) in P
 allCleanData.sort()  # This superior list contains all participants' data, and i sort it according to participant number
 # in ascending order
 
-
-# NEW CSV FILES WITH  CLEAN DATA
-
 headers = ["Participant ID", "Sex (1 = male, 2 = female)", "Sound Condition",
                "Habituation Trials", "LT Pre-test", "LT Same Trials",
                "LT Switch Trials", "LT both same and switch", "LT Post-test", "LT total of pre and post-test",
                "Difference score switch-same", "Overall Experiment LT"]
 
+# NEW CSV FILES WITH  CLEAN DATA
+
 cleanDataFile = open("allCleanData.csv",'w', newline='')  # Creating CSV file for all clean participant data
 exclFile = open("analysisData.csv", 'w', newline='')  # Creating CSV file for clean non-excluded participant data
 
+# Writing the header to the csv file with all participants:
 allDataWriter = csv.writer(cleanDataFile)
-exclFileWriter = csv.writer(exclFile)
-allDataWriter.writerow(headers)  # Adding header to csv file with all participants
-exclFileWriter.writerow(headers)  # Adding header to csv file with non-excluded participants only
+allDataWriter.writerow(headers)
 
+# Adding the header to the csv file with only non-excluded participants :
+exclFileWriter = csv.writer(exclFile)
+exclFileWriter.writerow(headers)
+
+# Writing the processed data into the two csv files:
 for participant in allCleanData:
     allDataWriter.writerow(participant[:-1])  # adding each participant data to csv with all participants
     if participant[-1] == False:  # If participant not excluded -
         exclFileWriter.writerow(participant[:-1])  # Adding each non-excluded participant to second csv.
-
 
 # CLOSING FILES:
 rawDataFile.close()

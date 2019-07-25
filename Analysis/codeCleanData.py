@@ -96,7 +96,7 @@ for file in listFiles:  # For every file (corresponding to one participant) in d
     # EXCLUSION CRITERIA;
     # The criteria is: 1) baby took more than 24 trials or less than 9 trials to habituate,
     # 2) LT at same or switch trials totalled to less than 1 second.
-    if habTrials > 24 or habTrials < 9 or LTSame < 1 or LTSwitch < 1:
+    if habTrials > 33 or habTrials < 9 or LTSame < 1 or LTSwitch < 1:
         # Participant excluded
         areTheyExcluded = True
     else:

@@ -4,7 +4,7 @@
 # Submitted to Developmental Science
 
 # Dependencies ------------------------------------------------------------
-setwd("~/Desktop/temp")
+setwd("~/Downloads/trajectories-perceptual-narrowing-master/Analysis") # Need to re-set if folder downloaded from GitHub
 require("praise")
 require("dplyr")
 require("lme4")
@@ -48,7 +48,7 @@ identical(A, B)
   # NTS: eventually make this automatic
 
 # Alter behavedata accordingly 
-behavedata <- behavedata[-c(3:5, 8:33), ]
+behavedata <- behavedata[-c(1, 5, 10), ] # this is just erasing unnecessary columns
 B <- behavedata$ID
 identical(A, B)
 # Now it's true, means they contain same included p's
@@ -193,3 +193,4 @@ plot(m1)
 
 # Collinearity measures 
 vif(m1)
+

@@ -51,7 +51,7 @@ for file in listFiles:  # For every file (corresponding to one participant) in d
             rowCount += 1
 
     # DEMOGRAPHICS (partID, group, age, sex, condition):
-    partID = int(rawData[1][0])  # collects participant number (which is on second row of first column in csv file)
+    partID = (rawData[1][0])  # collects participant number (which is on second row of first column in csv file)
     sex = rawData[1][3]  # collects sex on row 2 column 4. NOTE: 1 is male, 2 is female
     condition = int(rawData[1][5][-2:])  # This obtains the sound condition, by getting the integer value of the
     # last two letters of the label e.g. "LEAP07" => 7

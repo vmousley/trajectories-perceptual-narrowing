@@ -3,7 +3,6 @@
 # XXXXXXXXXXXXXXXXXXXXX
 # Submitted to Developmental Science
 
-
 ## DESCRIPTION:
 # This code processes all output from PyHab into two csv files. The two csv files are identical, but one has
 # pre-processed data from ALL participants and one has pre-processed data from all NON-EXCLUDED participants
@@ -184,8 +183,6 @@ for participant in allCleanData:
     allDataWriter.writerow(participant[:-1])  # adding each participant data to csv with all participants
     if participant[-1] == False:  # If participant not excluded -
         exclFileWriter.writerow(participant[:-1])  # Adding each non-excluded participant to second csv.
-
-
 
 # CLOSING FILES:
 rawDataFile.close()

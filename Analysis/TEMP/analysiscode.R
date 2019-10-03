@@ -21,8 +21,8 @@ require("car")
     # 2: 'analysisData.csv' which contains all eye-tracking data *for included participants only*
 
   # Specific inclusion criteria met in this pre-processing script are that infants have BOTH: 
-    # 1: Habituated within 9 - 33 habituation trials 
-      # 'habTrials > 33 or habTrials < 9'
+    # 1: Habituated within 9 - 24 habituation trials 
+      # 'habTrials > 24 or habTrials < 9'
     # 2: Looked for at least 1 second in test trials
       # 'LTSame < 1 or LTSwitch < 1'
 
@@ -36,7 +36,7 @@ mydata <- cleandata
 
 # Import behavioural data, which include all hand-scored 
   # data required for analyses (e.g., questionnaires, Mullen, etc)
-behavedata <- data.frame(read.csv("behaviouralData.csv"))#; View(behavedata)
+behavedata <- data.frame(read.csv("BehaviouralData.csv"))#; View(behavedata)
 
 # Clean behavedata to match number of participants in excluded data set
 A <- cleandata$Participant.ID
@@ -48,7 +48,7 @@ identical(A, B)
   # NTS: eventually make this automatic
 
 # Alter behavedata accordingly 
-behavedata <- behavedata[-c(1, 5, 10), ] # this is just erasing unnecessary columns
+behavedata <- behavedata[-c(3, 6, 11, 12, 16:36), ] # this is just erasing unnecessary columns
 B <- behavedata$ID
 identical(A, B)
 # Now it's true, means they contain same included p's
@@ -69,17 +69,20 @@ names(mydata)[names(mydata)=="LT.Post.test"] <- "LTPost"
 names(mydata)[names(mydata)=="LT.total.of.pre.and.post.test"] <- "TotalTest"
 
 # save only the columns you need
-df <- mydata[ , c(1, 2)]
+df1 <- mydata[ , c(1, 2)]
 
 # add relevant behavioural variables to mydata, add new column for trial
-df$age <- round(behavedata$age, 2) # NTS: age as integer
-df$group <- behavedata$group
+df1$age <- round(behavedata$age, 2) # NTS: age as integer
+df1$group <- behavedata$group
+df1$LTSame <- mydata$LTSame # this is the NON-spliced data, for the purposes of plots
+df1$LTSwitch<- mydata$LTSwitch
+df1$TotalTest <- mydata$TotalTest
 
 # give each participant 2 rows
-df <- df %>% slice(rep(1:n(), each = 2))
+df2 <- df1 %>% slice(rep(1:n(), each = 2))
 
 # make new column for trial type
-df$trial <- NA
+df2$trial <- NA
 
 # reshape looking time data to long format
   # could probably melt eloquently, but idk how so i'm forcing it

@@ -48,32 +48,47 @@ identical(A, B)
   # NTS: eventually make this automatic
 
 # Alter behavedata accordingly 
-behavedata <- behavedata[-c(1, 5, 10), ] # this is just erasing unnecessary columns
+behavedata <- behavedata[-c(14:29), ] # this is just erasing unnecessary columns
 B <- behavedata$ID
 identical(A, B)
-# Now it's true, means they contain same included p's
+# Now it's true (hopefully), means they contain same included p's
 
 # You now have all the data you need!
 praise()
 
 # Clean for modeling ------------------------------------------------------
-ogdata <- mydata # save original data set in case you need it later
+ogdata <- mydata # save original data set in case you need it later (FOR PLOTS)
+mydata$group <- behavedata$Group
+mydata$age <- behavedata$age
 
-# rename relevant variables
+# rename variables
 names(mydata)[names(mydata)=="Participant.ID"] <- "id"
 names(mydata)[names(mydata)=="Sex..1...male..2...female."] <- "sex"
 names(mydata)[names(mydata)=="LT.Pre.test"] <- "LTPre"
 names(mydata)[names(mydata)=="LT.Same.Trials"] <- "LTSame"
 names(mydata)[names(mydata)=="LT.Switch.Trials"] <- "LTSwitch"
 names(mydata)[names(mydata)=="LT.Post.test"] <- "LTPost"
-names(mydata)[names(mydata)=="LT.total.of.pre.and.post.test"] <- "TotalTest"
+names(mydata)[names(mydata)=="LT.both.same.and.switch"] <- "TotalTest"
 
-# save only the columns you need
+### UPGRADE ###
+
+# Graphical Analysis ------------------------------------------------------
+
+# NTS: Not finished, need to add illustration of group and trial effects
+
+# Age x Total Test LT
+plotAgexTotalTest <- ggplot(mydata, aes(age, TotalTest)) + geom_point() +
+  labs(x ='Age (days)', y = 'Total Test LT (seconds)') +
+  labs(title = 'Age x Total Test LT') +
+  labs(tag ='A')
+plotAgexTotalTest
+
+# start making new data frame w/ only the columns you need
 df <- mydata[ , c(1, 2)]
 
 # add relevant behavioural variables to mydata, add new column for trial
-df$age <- round(behavedata$age, 2) # NTS: age as integer
-df$group <- behavedata$group
+df$age <- mydata$age # NTS: this is weird bc i did some stuff manually
+df$group <- mydata$group
 
 # give each participant 2 rows
 df <- df %>% slice(rep(1:n(), each = 2))
@@ -97,6 +112,7 @@ ltsb; ltsa
 # input data in correct format back into df
 df$LT <- ltsa$value
 df$trial <-ltsa$Var1
+df <- na.omit(df) # omit empty rows
 
 # Data is ready for modelling
 praise()
@@ -107,31 +123,6 @@ praise()
 # Modeling or checking assumptions 
 
 # NTS: ADD!
-
-# Graphical Analysis ------------------------------------------------------
-
-# NTS: Not finished, need to add illustration of group and trial effects
-
-# Age x LT
-plotAgexLT <- ggplot(df, aes(age, LT)) + geom_point() +
-  labs(x ='Age (days)', y = 'LT (seconds)') +
-  labs(title = 'Age x LT') +
-  labs(tag ='A')
-plotAgexLT
-
-# Age x Group x LT
-plotAgexGroupxLT <- ggplot(df, aes(age, LT)) + geom_point() + 
-  labs(x ='Age (days)', y = 'LT (seconds)') + 
-  labs(title = 'Age x Group x LT') +
-  labs(tag ='B')
-plotAgexGroupxLT
-
-# Age x Group x TT x LT
-plotAgexGroupxTTxLT <- ggplot(df, aes(age, LT)) + geom_point() + 
-  labs(x ='Age (days)', y = 'LT (seconds)') + 
-  labs(title = 'Age x Group x TT x LT') +
-  labs(tag ='B')
-plotAgexGroupxTTxLT
 
 # Linear Modelling --------------------------------------------------------
 
@@ -152,6 +143,20 @@ m1 <- lmer(LT ~ age*group*trial + (1|id), data=df)
   # Outcome = looking time
   # Predictors: age (days), group (M v B), trial (same v switch)
   # The fixed effect tells the model to fit individual trajectories for each participant
+
+# Plotting regression line
+df$group <- as.factor(df$group)
+mydata <- na.omit(mydata)
+mydata$group <- as.factor(mydata$group)
+ggplot(mydata, aes(x = age, y = TotalTest, colour=group)) + 
+  geom_smooth(method="lm",se=F,size=1) +
+  geom_point(alpha = 1) + 
+  geom_hline(yintercept=0, linetype="dashed") +
+  theme_bw() +
+  ggtitle('LT to test phase over time') +
+  xlab('Age (days)') + 
+  ylab ('LT to Test Phase (Same & Switch) (sec)')
+  
 
 # Exploration of model ----------------------------------------------------
 

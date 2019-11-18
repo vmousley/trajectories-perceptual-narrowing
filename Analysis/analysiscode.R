@@ -14,6 +14,7 @@ require ("ggplot2")
 require("car")
 require("readxl")
 require("formattable")
+require("lmerTest")
 
 # Pre-Processing ----------------------------------------------------------
 
@@ -150,7 +151,7 @@ praise()
 # A Normal probability plot, histogram of the residuals or say a Wilk-Shapiro test will indicate if the normality
 
 m0 <- lmer(LT ~ 1 + (1|id), data=df); summary(m0)
-m1 <- lmer(LT ~ age*group*trial + (1|id), data=df); summary (m1)
+m1 <- lmer(LT ~ age*group*trial* + (1|id), data=df)
   # Outcome = looking time
   # Predictors: age (days), group (M v B), trial (same v switch)
   # The fixed effect tells the model to fit individual trajectories for each participant
@@ -159,7 +160,7 @@ m1 <- lmer(LT ~ age*group*trial + (1|id), data=df); summary (m1)
 df$group <- as.factor(df$group)
 df <- na.omit(df)
 df$group <- as.factor(df$group)
-x <- ggplot(alldata, aes(x = age, y = TotalTest, colour=group)) + 
+plotAgexTotalTest <- ggplot(alldata, aes(x = age, y = TotalTest, colour=group)) + 
   geom_smooth(method = "lm", se = F, size = 0.5) +
   geom_point(alpha = 1) + 
   geom_hline(yintercept = 0, linetype = "dashed") +
@@ -218,6 +219,10 @@ plot(m1)
 # Collinearity measures 
 vif(m1)
 
-
-# Carbonate ---------------------------------------------------------------
+# Controlling for global attention ----------------------------------------
+df2 <- alldata[ , c(1, 10)]
+df2 <- df2 %>% slice(rep(1:n(), each=2))
+df3 <- merge(df, df2)
+names(df3)[names(df3)=="TotalAttenGet"] <- "atn"
+m3 <- lmer(LT ~ age*group*trial*atn + (1|id), data = df3)
 

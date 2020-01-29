@@ -4,17 +4,17 @@
 # Submitted to Developmental Science
 
 # Dependencies ------------------------------------------------------------
-# ~/Volumes/leap/Behavioural/IDs.xlsx
-
 require("praise")
 require("dplyr")
 require("lme4")
 require("reshape2")
-require ("ggplot2")
+require("ggplot2")
 require("car")
 require("readxl")
 require("formattable")
 require("lmerTest")
+# require('cowplot')
+# require('readr')
 
 # Pre-Processing ----------------------------------------------------------
 
@@ -50,11 +50,17 @@ names(cleandata)[names(cleandata)=="LT.total.of.pre.and.post.test"] <- "TotalAtt
 
 # Import behavioural data, which include all hand-scored 
   # data required for analyses (e.g., questionnaires, Mullen, etc)
-behavedata <- data.frame(read_excel('/Volumes/leap/Behavioural/IDs.xlsx'))#; View(behavedata)
+behavedata <- data.frame(read_excel('/Volumes/leap/Behavioural/BehaviouralData.xlsx'))#; View(behavedata)
 names(behavedata)[names(behavedata)=="Age"] <- "age"
 names(behavedata)[names(behavedata)=="Group"] <- "group"
-alldata <- merge(cleandata, behavedata, by.x = 'id', by.y = 'ID.no')
-
+names(behavedata)[names(behavedata)=="Difference.score.switch.same"] <- "diffscore"
+names(behavedata)[names(behavedata)=="Overall.Experiment.LT"] <- "LTexperiment"
+names(behavedata)[names(behavedata)=="degree.of.bi"] <- "degreeofbilingualism"
+names(behavedata)[names(behavedata)=="CDI.MONO"] <- "cdimono"
+names(behavedata)[names(behavedata)=="CDI.BI.ENG"] <- "cdibieng"
+names(behavedata)[names(behavedata)=="CDI.BI.OTHER"] <- "cdibiother"
+alldata <- merge(cleandata, behavedata, by.x = 'id', by.y = 'ID')
+alldata$age <- as.numeric(alldata$age)
 # You now have all the data you need!
 praise()
 
@@ -62,22 +68,17 @@ praise()
 ## for those with data collected
 alldata$agem <- floor(alldata$age*0.0328767); alldata$agem
 mtable <- table(alldata$agem, alldata$group); mtable 
-mplot <- mosaicplot(mtable,
-           main = 'Data Collected Matching',
-           xlab = 'Age bins (months)', ylab = 'Group',
-           cex.axis = 1.5, border = TRUE, color = TRUE)
+# mplot <- mosaicplot(mtable,
+           # main = 'Data Collected Matching',
+           # xlab = 'Age bins (months)', ylab = 'Group',
+           # cex.axis = 1.5, border = TRUE, color = TRUE)
 
 ## for those booked
-behavedata$bookedages <- floor(behavedata$age*0.0328767); behavedata$bookedages
-mbtable <- table(behavedata$bookedages, behavedata$group); mbtable
-mbplot <- mosaicplot(mbtable, 
-            main = 'Booked Participants Matching',
-            xlab = 'Age bins (months)', ylab = 'Group',
-            cex.axis = 1.5, border = TRUE, color = TRUE)
+
 
 # Counterbalancing --------------------------------------------------------
-cb <- data.frame(alldata$condition, alldata$condition, alldata$agem)
-cbtable <- table(cb); cbtable
+# cb <- data.frame(alldata$condition, alldata$condition, alldata$agem)
+# cbtable <- table(cb); cbtable
 
 # Graphical Analysis ------------------------------------------------------
 
@@ -97,10 +98,18 @@ plotAgexSwitch <- ggplot(alldata, aes(age, LTSwitch, colour = group)) +
   labs(tag ='A')
 plotAgexSwitch
 
+# Global Attention
+plotAttention <- ggplot(alldata, aes(age, TotalAttenGet, colour = group)) + 
+  geom_point() + 
+  labs(x = 'Age (days)', y = 'Total LT to Attention Getter Phases') +
+  labs(title = 'Total LT to Atten Gett Phases') + 
+  labs(tag = 'A')
+plotAttention
+
 # Modeling ----------------------------------------------------------------
 
 # start making new data frame w/ only the columns you need
-df <- alldata[ , c(1, 2, 20, 21)]
+df <- alldata[ , c(1, 2, 13, 14)]
 
 # give each participant 2 rows
 df <- df %>% slice(rep(1:n(), each = 2))
@@ -125,6 +134,7 @@ ltsb; ltsa
 df$LT <- ltsa$value
 df$trial <-ltsa$Var1
 df <- na.omit(df) # omit empty rows
+df$group <- alldata$group
 
 # Data is ready for modelling
 praise()
@@ -151,7 +161,8 @@ praise()
 # A Normal probability plot, histogram of the residuals or say a Wilk-Shapiro test will indicate if the normality
 
 m0 <- lmer(LT ~ 1 + (1|id), data=df); summary(m0)
-m1 <- lmer(LT ~ age*group*trial* + (1|id), data=df)
+m1 <- lmer(LT ~ age*group*trial + (1|id), data=df); summary(m1)
+
   # Outcome = looking time
   # Predictors: age (days), group (M v B), trial (same v switch)
   # The fixed effect tells the model to fit individual trajectories for each participant
@@ -160,10 +171,12 @@ m1 <- lmer(LT ~ age*group*trial* + (1|id), data=df)
 df$group <- as.factor(df$group)
 df <- na.omit(df)
 df$group <- as.factor(df$group)
+
 plotAgexTotalTest <- ggplot(alldata, aes(x = age, y = TotalTest, colour=group)) + 
   geom_smooth(method = "lm", se = F, size = 0.5) +
   geom_point(alpha = 1) + 
-  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_ribbon(aes(ymin=CI_lower, ymax=CI_upper), fill='blue') +
+  geom_text(aes(label=id)) +
   theme_bw() +
   ggtitle('LT to test phase over time') +
   xlab('Age (days)') + 
@@ -172,13 +185,15 @@ plotAgexTotalTest <- ggplot(alldata, aes(x = age, y = TotalTest, colour=group)) 
 plotAgexSwitch <- ggplot(alldata, aes(x = age, y = LTSwitch, colour = group)) +
   geom_smooth(method="lm", se = F, size = 0.5) +
   geom_point(alpha = 1) + 
-  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_text(aes(label=id)) +
   theme_bw() + 
   ggtitle('LT to switch phase') + 
   xlab ('Age (days)') + 
   ylab ('LT to Switch Phase (sec)'); plotAgexSwitch
 
 # Exploration of model ----------------------------------------------------
+# Effects of attention
+mean()
 
 # Isolate coefficients and CIs 
 coefficients(m1)
@@ -220,9 +235,105 @@ plot(m1)
 vif(m1)
 
 # Controlling for global attention ----------------------------------------
-df2 <- alldata[ , c(1, 10)]
+df2 <- alldata[ , c(1, 2, 10, 13, 14)] # total attenge
 df2 <- df2 %>% slice(rep(1:n(), each=2))
-df3 <- merge(df, df2)
-names(df3)[names(df3)=="TotalAttenGet"] <- "atn"
-m3 <- lmer(LT ~ age*group*trial*atn + (1|id), data = df3)
+df2$TrialLT <- df$LT
+df2$TrialType <- df$trial
+names(df2)[names(df2)=="TotalAttenGet"] <- "atn"
+m3 <- lmer(TrialLT ~ atn + age*group*TrialType + (1|id), data = df2)
+summary(m3)
 
+# Difference? -------------------------------------------------------------
+names(alldata)[names(alldata)=="Difference.score.switch.same"] <- "TestDiff"
+plotAgexTestDiff <- ggplot(alldata, aes(x = age, y = TestDiff, colour = group)) +
+  geom_smooth(method="lm", se = F, size = 0.5) +
+  geom_point(alpha = 1) + 
+  geom_text(aes(label=id)) +
+  theme_bw() + 
+  ggtitle('Difference in LT between test phases') + 
+  xlab ('Age (days)') + 
+  ylab ('Difference in LT between test phases'); plotAgexTestDiff
+
+df3 <- df2
+#### giving up on this
+
+m4 <- lmer(TestDiff ~ age*group*trial + (1|id), data = df3)
+
+# Raincloud ---------------------------------------------------------------
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(Hmisc)
+library(plyr)
+library(RColorBrewer)
+library(reshape2)
+
+source('https://gist.githubusercontent.com/benmarwick/2a1bb0133ff568cbe28d/raw/fb53bd97121f7f9ce947837ef1a4c65a73bffb3f/geom_flat_violin.R')
+
+raincloud_theme = theme(
+  text = element_text(size = 10),
+  axis.title.x = element_text(size = 16),
+  axis.title.y = element_text(size = 16),
+  axis.text = element_text(size = 14),
+  axis.text.x = element_text(angle = 45, vjust = 0.5),
+  legend.title=element_text(size=16),
+  legend.text=element_text(size=16),
+  legend.position = "right",
+  plot.title = element_text(lineheight=.8, face="bold", size = 16),
+  panel.border = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+  axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'))
+
+## TOTAL TEST PLOT
+totaltest <- melt(alldata, id.vars=c('id', 'group', 'age'),
+                 measure.vars=c('TotalTest'), variable.name='LT to Total Test',
+                 value.name='TotalTest')
+
+lb <- function(x) mean(x) - sd(x)
+ub <- function(x) mean(x) + sd(x)
+
+sumld <- ddply(totaltest, ~TotalTest, summarise, mean=mean(TotalTest), median=median(TotalTest), lower=lb(TotalTest),
+               upper=ub(TotalTest))
+head(sumld)
+
+totaltestplot <- ggplot(data = totaltest, aes(y = TotalTest, x = group, fill = group)) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
+  geom_point(aes(y = TotalTest, color = "darkred"), position = position_jitter(width = .15), size = .5, alpha = 0.8) +
+  geom_boxplot(width = .1, guides = FALSE, outlier.shape = NA, alpha = 0.5) +
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE) +
+  guides(color = FALSE) +
+  scale_color_brewer(palette = "Spectral") +
+  scale_fill_brewer(palette = "Spectral") +
+  coord_flip() +
+  theme_bw() +
+  raincloud_theme
+totaltestplot
+
+## SWITCH PLOT
+switchplot <- melt(alldata, id.vars=c('id', 'group', 'age'),
+                  measure.vars=c('LTSwitch'), variable.name='LT to Switch Phase',
+                  value.name='LTSwitch')
+
+lb <- function(x) mean(x) - sd(x)
+ub <- function(x) mean(x) + sd(x)
+
+sumld2 <- ddply(switchplot, ~LTSwitch, summarise, mean=mean(LTSwitch), median=median(LTSwitch), lower=lb(LTSwitch),
+               upper=ub(LTSwitch))
+head(sumld2)
+
+switchplot <- ggplot(data = switchplot, aes(y = LTSwitch, x = group, fill = group)) +
+  geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
+  geom_point(aes(y = LTSwitch, color = "darkred"), position = position_jitter(width = .15), size = .5, alpha = 0.8) +
+  geom_boxplot(width = .1, guides = FALSE, outlier.shape = NA, alpha = 0.5) +
+  expand_limits(x = 5.25) +
+  guides(fill = FALSE) +
+  guides(color = FALSE) +
+  scale_color_brewer(palette = "Spectral") +
+  scale_fill_brewer(palette = "Spectral") +
+  coord_flip() +
+  theme_bw() +
+  raincloud_theme
+switchplot

@@ -1,18 +1,20 @@
 # "Developmental trajectories of perceptual narrowing among monolingual and bilingual infants"
-# Stage 1: Registered Report
-# XXXXXXXXXXXXXXXXXX
-# Submitted to Developmental Science
+# Stage 1: Registered Report, rejected by Developmental Science
+# last updated 22 Apr 2020
 
 # Dependencies ------------------------------------------------------------
 require("praise")
 require("dplyr")
 require("lme4")
+require("multcomp")
 require("reshape2")
 require("ggplot2")
 require("car")
 require("readxl")
 require("formattable")
 require("lmerTest")
+require("e1071")
+require("lattice")
 # require('cowplot')
 # require('readr')
 
@@ -34,8 +36,12 @@ require("lmerTest")
 
 # Importing Data ----------------------------------------------------------
 
-# Import pre-processed eye-tracking data (inclusion criteria mets)
-cleandata <- data.frame(read.csv("/Volumes/leap/PYTHON data/analysisData.csv"))#; View(cleandata)
+# Import pre-processed eye-tracking data (inclusion criteria met) - WILL NEED TO CHANGE PATH 
+# to wherever data is stored on your computer
+cleandata <- data.frame(read.csv("/Users/victoriamousley/Documents/PYTHON data/allCleanData.csv"))#; View(cleandata)
+
+# View(cleandata): shows you what the data frame 'cleandata' looks like, so that should help
+# you understand what I'm doing below w/ renaming etc.
 
 # rename variables
 names(cleandata)[names(cleandata)=="Participant.ID"] <- "id"
@@ -47,48 +53,113 @@ names(cleandata)[names(cleandata)=="LT.Switch.Trials"] <- "LTSwitch"
 names(cleandata)[names(cleandata)=="LT.Post.test"] <- "LTPost"
 names(cleandata)[names(cleandata)=="LT.both.same.and.switch"] <- "TotalTest"
 names(cleandata)[names(cleandata)=="LT.total.of.pre.and.post.test"] <- "TotalAttenGet"
+names(cleandata)[names(cleandata)=="Difference.score.switch.same"] <- "Diff"
+names(cleandata)[names(cleandata)=="Overall.Experiment.LT"] <- "TotalLT"
 
 # Import behavioural data, which include all hand-scored 
   # data required for analyses (e.g., questionnaires, Mullen, etc)
-behavedata <- data.frame(read_excel('/Volumes/leap/Behavioural/BehaviouralData.xlsx'))#; View(behavedata)
+behavedata <- data.frame(read_excel('/Users/victoriamousley/Documents/MATLAB/BehaviouralData.xlsx'))#; View(behavedata)
+names(behavedata)[names(behavedata)=="ID"] <- "id"
 names(behavedata)[names(behavedata)=="Age"] <- "age"
 names(behavedata)[names(behavedata)=="Group"] <- "group"
-names(behavedata)[names(behavedata)=="Difference.score.switch.same"] <- "diffscore"
-names(behavedata)[names(behavedata)=="Overall.Experiment.LT"] <- "LTexperiment"
-names(behavedata)[names(behavedata)=="degree.of.bi"] <- "degreeofbilingualism"
-names(behavedata)[names(behavedata)=="CDI.MONO"] <- "cdimono"
-names(behavedata)[names(behavedata)=="CDI.BI.ENG"] <- "cdibieng"
-names(behavedata)[names(behavedata)=="CDI.BI.OTHER"] <- "cdibiother"
-alldata <- merge(cleandata, behavedata, by.x = 'id', by.y = 'ID')
-alldata$age <- as.numeric(alldata$age)
+alldata <- merge(cleandata, behavedata, by.x = 'id', by.y = 'id') # merge eye-tracking
+# and behavioural data by ID (so all data aligns correctly)
+class(alldata$age) # this command tells you what type of data/object R thinks it's looking at
+# sometimes it thinks things are factors or characters when it shouldn't, so you can 
+# re-write them to be numeric for analyses
+
+alldata$age <- as.numeric(alldata$age) # this does the above so age can be continuous, numeric var
+
+# take out babies with valid PN data but invalid PN backgrounds
+exclude <- list('B007', 'B041','B047','B048') # these are ones I've identified as having 
+# either not enough bilingual exposure to be 'bilingual', or babies who had Hindi/other exposure
+alldata <- alldata[(!alldata$id %in% exclude),] # saying: write 'alldata' variable that
+# is made of the 'alldata' frame, EXCEPT ids that are listed in 'exclude' list (defined above)
+# allows manual exclusion of rows/participants, basically
+
 # You now have all the data you need!
-praise()
+praise() # a fun package that makes you feel good about yourself! hooray
 
 # Matching ----------------------------------------------------------------
-## for those with data collected
-alldata$agem <- floor(alldata$age*0.0328767); alldata$agem
-mtable <- table(alldata$agem, alldata$group); mtable 
+## for those BOOKED
+booked <- data.frame(read_excel('/Users/victoriamousley/Documents/MATLAB/IDs.xlsx'))
+# this is the excel doc i was updating with each recruiting/booking of the babies
+# so this code is just for me to make sure I know where our group numbers are
+names(booked)[names(booked)=="Age"] <- "age"
+names(booked)[names(booked)=="Group"] <- "group"
+names(booked)[names(booked)=='PN.valid.'] <- 'PN'
+names(booked)[names(booked)=='ID.no'] <- 'id'
+booked$agem <- floor(booked$age*0.0328767); booked$agem # says: 'find age var in the booked 
+# dataframe, which is calculated in days, and multiply it by 0.03 to turn it into months, 
+# then find the 'floor' integer (aka which month bin the baby should be in) and put that in 
+# a new variable in booked table called 'agem' (age in months)
+booked_table <- table(booked$agem, booked$group); booked_table # make a table of
+# show me a pivot table of groups by age bins
+
 # mplot <- mosaicplot(mtable,
            # main = 'Data Collected Matching',
            # xlab = 'Age bins (months)', ylab = 'Group',
            # cex.axis = 1.5, border = TRUE, color = TRUE)
+# this just makes a nice plot but means nothing really
 
-## for those booked
+## subtract those with bad data or excluded! (see IDs sheet)
+booked <- booked[!(booked$PN == '0'),] # go to booked table, if PN val=0 (which means they
+# don't have valid PN data for some reason) then exclude them in the final booked table
+booked_table <- table(booked$agem, booked$group) # show pivot table of babies who are 
+# both valid for inclusion AND have good data - this ASSUMES booked in future babies have 
+# good PN data so we don't overbook way too much
+booked_table # all numbers BOOKED -- excluding infants with excluded data
+
+## for those with GOOD data
+alldata$agem <- floor(alldata$age*0.0328767); alldata$agem # same as above, but using alldata
+# frame which is the actual data collected during ET task
+good_table <- table(alldata$agem, alldata$group); good_table  # same as above
+
+### Behavioural analysis --------------------------------------------------
+mono <- filter(alldata, group=='M') # filter all rows in 'alldata' where group = M
+# and assing in a new frame called 'mono'
+names(mono)[names(mono)=="CDI.Eng"] <- "cdieng" # rename 
+mono$cdieng <- as.numeric(mono$cdieng, na.rm = T) # reclassify as number
+mean(mono$cdieng, na.rm = TRUE) # mean < median
+median(mono$cdieng, na.rm = TRUE) # median > mean
+skewness(mono$cdieng, na.rm = TRUE) # super skewed
+hist(mono$cdieng) # looks skewed
+boxplot(mono$cdieng) # has 2 outliers
+outliers <- boxplot(mono$cdieng)$out # find them
+mono[which(mono$cdieng %in% outliers),] # see rest of info for outlier babies
+# mono <- mono[-which(mono$cdieng %in% outliers),] this code will exclude outliers
 
 
-# Counterbalancing --------------------------------------------------------
-# cb <- data.frame(alldata$condition, alldata$condition, alldata$agem)
-# cbtable <- table(cb); cbtable
+# show me CDI by age in monolinguals -- some example code for making a scatterplot where
+# you can see ID numbers. there's warning messages but you can ignore them
+ggplot(mono, aes(y=cdieng, x=age, colour=agem)) + 
+  geom_point() +
+  geom_smooth(method = 'lm', se = T, size = 0.5) +
+  geom_text(aes(label=id)) + 
+  ggtitle('CDI by Age: Monolinguals') +
+  xlab('Age (days)') + 
+  ylab('Raw CDI sum')
 
-# Graphical Analysis ------------------------------------------------------
+m1 <- lm(cdieng ~ age, data = mono) # basic code for a linear model -- is CDI 
+# score predicted by age in the monolingual group?
+summary(m1) # summary of M1
 
+bi <- filter(alldata, group=='B')
+names(bi)[names(bi)=="Eng.exp"] <- "pereng"
+names(bi)[names(bi)=="Second.lang.exp"] <- "perother"
+names(bi)[names(bi)=="lang.mixing.scale"] <- "langmix"
+bi$perother <- as.numeric(bi$perother) # reclassify percentage of non-Eng exposure
+bi$degbi <- (bi$pereng/bi$perother) # calculate degree of bilingualism 
+
+# Pre-Reg Hyp: Visual Analysis ------------------------------------------------------
 # Age x Total Test LT
 plotAgexTotalTest <- ggplot(alldata, aes(age, TotalTest, colour = group)) + 
   geom_point() +
   labs(x ='Age (days)', y = 'Total Test LT (seconds)') +
   labs(title = 'Age x Total Test LT') +
-  labs(tag ='A')
-plotAgexTotalTest
+  labs(tag ='A') # scatterplot for age x total test LT, coloured dots = by group
+
+plotAgexTotalTest # show scatterplot made above
 
 # Age x LT to Switch
 plotAgexSwitch <- ggplot(alldata, aes(age, LTSwitch, colour = group)) + 
@@ -108,19 +179,34 @@ plotAttention
 
 # Modeling ----------------------------------------------------------------
 
+# OUTLIERS ------
+mean(alldata$TotalTest, na.rm = TRUE)
+median(alldata$TotalTest)
+sd(alldata$TotalTest)
+skewness(alldata$TotalTest, na.rm = TRUE) # super skewed
+hist(alldata$TotalTest) # looks skewed
+boxplot(alldata$TotalTest)
+
 # start making new data frame w/ only the columns you need
-df <- alldata[ , c(1, 2, 13, 14)]
+df <- alldata[ , c(1, 2, 13, 14, 15, 28)] # says: "go to 'alldata' frame, pull out ALL 
+# rows, but only columns 1, 2, 13, 14, 15, and 28 (which we care about)
+# can tell we care about them with command: colnames(alldata)
+# this gives list of column numbers with their labels, so we are pulling out 
+# id, sex, age, gender, group, and age in months for now
 
 # give each participant 2 rows
-df <- df %>% slice(rep(1:n(), each = 2))
+df <- df %>% slice(rep(1:n(), each = 2)) # this is probably a bad way to do this, 
+# but it's using dplyr to slice every row, then make 2 rows for every 1, in a new data frame 
+# called DF
 
 # make new column for trial type
-df$trial <- NA
+df$trial <- NA # make a new column for trial type
 
 # reshape looking time data to long format
   # could probably melt eloquently, but idk how so i'm forcing it
 same <- alldata$LTSame # save same looking times
 switch <- alldata$LTSwitch # save switch looking times
+# total <- alldata$TotalTest # control for total attention
 ltsb <- rbind(same, switch) # bind them together w ps as columns (b for 'before')
 ltsa <- melt(ltsb) # put in correct long order (a for 'after')
 
@@ -134,7 +220,7 @@ ltsb; ltsa
 df$LT <- ltsa$value
 df$trial <-ltsa$Var1
 df <- na.omit(df) # omit empty rows
-df$group <- alldata$group
+df$group <- alldata$group # move data from alldata$group to df$group
 
 # Data is ready for modelling
 praise()
@@ -144,7 +230,40 @@ praise()
 # Per Csibra et al. (2014), log transform looking time before
 # Modeling or checking assumptions 
 
-# NTS: ADD!
+ggplot(data = df, aes(LT)) + geom_histogram() # looks non-normal
+skewness(df$LT) # data is approximately symmetric? rule is -0.5 to 0.5 
+# is approximately symmatric, 1 > or -1 < is highly skewed
+
+ggplot(data = df, aes(x = age, y = LT))+
+  geom_point()
+
+ggplot(data = df, aes(x = age, y = LT))+
+  geom_point() + 
+  scale_y_log10()
+
+ggplot(data = df, aes(x = age, y = LT)) + 
+  geom_point() + 
+  scale_x_log10()
+
+ggplot(data = df, aes(x=age, y=LT)) + 
+  geom_point() + 
+  scale_x_log10() + scale_y_log10()
+
+lm.model = lm(LT ~ age*group*trial, data = df)
+summary(lm.model) # linear model isn't going to work for this because
+# then we can't have fixed effect, but 
+# without log transformation, teh residual standard error is 1.817
+
+lm_log.model=lm(log(LT) ~ age*group*trial, data = df)
+summary(lm_log.model) # and WITH log transformed LTs, residual standard 
+# error is 0.4161
+
+lm_log10.model=lm(log10(LT) ~ age*group*trial, data = df)
+summary(lm_log10.model) # with log 10 transformed LTs, residual
+# standard error is 0.1807
+
+# IF WE WANT TO LOG10 IT
+df$LT <- log10(df$LT)
 
 # Linear Modelling --------------------------------------------------------
 
@@ -160,30 +279,47 @@ praise()
 # Plotting the residuals against the fitted values will indicate if there is non-constant error variance, i.e. if the variance increases with the mean the residuals will fan out as the fitted value increases. Usually transforming the data, or using another distribution will help. 
 # A Normal probability plot, histogram of the residuals or say a Wilk-Shapiro test will indicate if the normality
 
-m0 <- lmer(LT ~ 1 + (1|id), data=df); summary(m0)
-m1 <- lmer(LT ~ age*group*trial + (1|id), data=df); summary(m1)
+mean(df$LT)
+median(df$LT)
+sd(df$LT)
+skewness(df$LT) # super skewed
+hist(df$LT) # looks skewed
+boxplot(df$LT) # has one outlier
+outliers <- boxplot(df$LT)$out # B022 is outlier
+df[which(df$LT %in% outliers),] # see rest of info
+# df <- df[-which(df$LT %in% outliers),] take out outliers
 
+m0 <- lmer(LT ~ 1 + (1|id), data=df); summary(m0)
+# ggplot(df, aes(y=LT, x=age, colour=group)) + 
+#   geom_point() + 
+#   geom_smooth(method = 'lm', se = T, size = 0.5) + 
+#   geom_text(aes(label=id))
+
+m1 <- lmer(LT ~ age*group*trial + (1|id), data=df); summary(m1)
   # Outcome = looking time
   # Predictors: age (days), group (M v B), trial (same v switch)
   # The fixed effect tells the model to fit individual trajectories for each participant
 
+m2 <- lmer(LT~agem*group*trial + (1|id), data = df); summary(m2)
+
 # Plotting regression line
-df$group <- as.factor(df$group)
-df <- na.omit(df)
+df$group <- as.factor(df$group) # make group a factor
+df <- na.omit(df) # omit the NAs in df 
 df$group <- as.factor(df$group)
 
 plotAgexTotalTest <- ggplot(alldata, aes(x = age, y = TotalTest, colour=group)) + 
-  geom_smooth(method = "lm", se = F, size = 0.5) +
-  geom_point(alpha = 1) + 
-  geom_ribbon(aes(ymin=CI_lower, ymax=CI_upper), fill='blue') +
+  geom_smooth(method = 'lm', se = T, size = 0.5) +
+  geom_point(alpha = 1) +
+  # geom_ribbon(aes(ymin = cilower, ymax=ciupper), fill='blue') +
+  # geom_ribbon(aes(ymin=CI_lower, ymax=CI_upper), fill='blue') +
   geom_text(aes(label=id)) +
   theme_bw() +
   ggtitle('LT to test phase over time') +
   xlab('Age (days)') + 
-  ylab ('LT to Test Phase (Same & Switch) (sec)'); plotAgexTotalTest
+  ylab ('LT to Test Phase (Same & Switch) (sec)'); plotAgexTotalTest # make a plot
 
 plotAgexSwitch <- ggplot(alldata, aes(x = age, y = LTSwitch, colour = group)) +
-  geom_smooth(method="lm", se = F, size = 0.5) +
+  geom_smooth(method = 'lm', se = T, size = 0.5) +
   geom_point(alpha = 1) + 
   geom_text(aes(label=id)) +
   theme_bw() + 
@@ -191,15 +327,55 @@ plotAgexSwitch <- ggplot(alldata, aes(x = age, y = LTSwitch, colour = group)) +
   xlab ('Age (days)') + 
   ylab ('LT to Switch Phase (sec)'); plotAgexSwitch
 
-# Exploration of model ----------------------------------------------------
+# standardized residuals versus fitted values by group
+plot(m0, resid(., scaled=TRUE) ~ fitted(.) | group, abline = 0)
+
+# box-plots of residuals by subject
+plot(m0, id ~ resid(., scaled = TRUE))
+
+# observed versus fitted values by subject
+plot(m0, LT ~ fitted(.) | id, abline = c(0.1))
+
+# residuals by age, separated by subject
+plot(m0, resid(., scaled = TRUE) ~ age | id, abline=0)
+
+## for m1
+
+# standardized residuals versus fitted values by group
+plot(m1, resid(., scaled=TRUE) ~ fitted(.) | group, abline = 0)
+
+# box-plots of residuals by subject
+plot(m1, id ~ resid(., scaled = TRUE))
+
+# observed versus fitted values by subject
+plot(m1, LT ~ fitted(.) | id, abline = c(0.1))
+
+# residuals by age, separated by subject
+plot(m1, resid(., scaled = TRUE) ~ age | id, abline=0)
+
+qqmath(m1)
+# if (require("ggplot2")){
+#   ## we can create the same plots using ggplot2 and fortify() function
+#   m1F <- fortify.merMod(m1)
+#   ggplot(m1, aes(.fitted, .resid)) + geom_point(colour="blue") +
+#     facet_grid(.~group) + geom_hline(yintercept=0)
+#   ## note: ids are ordered by mean distance
+#   ggplot(m1F, aes(id,.resid)) + geom_boxplot() + coord_flip()
+#   ggplot(m1F, aes(.fitted,LT)) + geom_point(colour = "blue") +
+#     facet_wrap(~id) + geom_abline(intercept=0, slope=1)
+#   ggplot(m1F, aes(age,.resid)) + geom_point(colour="blue") + facet_grid(.~group) + 
+#     geom_hline(yintercept=0)+geom_line(aes(group=id), alpha=0.4)+geom_smooth(method="loess")
+#   detach("packages::ggplot2")
+# }
+# Exploration of model (NTS: NO IDEA WHAT THIS DOES----------------------------------------------------
 # Effects of attention
 mean()
 
 # Isolate coefficients and CIs 
 coefficients(m1)
-confint(m1)
+ci <- confint(m1)
 
-# Goodness of Fit
+ggplot()# Goodness of Fit
 summary(m1)$adj.r.squared
 deviance(m1)
 BIC(m1)
@@ -234,19 +410,10 @@ plot(m1)
 # Collinearity measures 
 vif(m1)
 
-# Controlling for global attention ----------------------------------------
-df2 <- alldata[ , c(1, 2, 10, 13, 14)] # total attenge
-df2 <- df2 %>% slice(rep(1:n(), each=2))
-df2$TrialLT <- df$LT
-df2$TrialType <- df$trial
-names(df2)[names(df2)=="TotalAttenGet"] <- "atn"
-m3 <- lmer(TrialLT ~ atn + age*group*TrialType + (1|id), data = df2)
-summary(m3)
-
-# Difference? -------------------------------------------------------------
-names(alldata)[names(alldata)=="Difference.score.switch.same"] <- "TestDiff"
-plotAgexTestDiff <- ggplot(alldata, aes(x = age, y = TestDiff, colour = group)) +
-  geom_smooth(method="lm", se = F, size = 0.5) +
+# Difference? (NTS: DOESN'T WORK YET) -------------------------------------------------------------
+names(alldata)[names(alldata)=="Difference.score.switch.same"] <- "TestDiff" # why Diff?
+plotAgexTestDiff <- ggplot(alldata, aes(x = age, y = Diff, colour = group)) +
+  geom_smooth(method="lm", se = T, size = 0.5) +
   geom_point(alpha = 1) + 
   geom_text(aes(label=id)) +
   theme_bw() + 
@@ -254,12 +421,11 @@ plotAgexTestDiff <- ggplot(alldata, aes(x = age, y = TestDiff, colour = group)) 
   xlab ('Age (days)') + 
   ylab ('Difference in LT between test phases'); plotAgexTestDiff
 
-df3 <- df2
-#### giving up on this
+# need to make TestDiff a thing to make this model work
 
-m4 <- lmer(TestDiff ~ age*group*trial + (1|id), data = df3)
+m4 <- lmer(TestDiff ~ age*group*trial + (1|id), data = df)
 
-# Raincloud ---------------------------------------------------------------
+# Raincloud (NTS: NO IDEA WHAT THIS DOES)---------------------------------------------------------------
 library(readr)
 library(tidyr)
 library(ggplot2)
